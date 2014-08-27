@@ -1,0 +1,53 @@
+typedef struct node Node;
+
+struct node{
+  int value1;
+  int value2;
+  Node * next;
+};
+
+int buildLinkedList(Node * head, int size){
+
+  int i= 1 ;
+  Node * ptr;
+  if(size<=0){
+    printf("input %d illegal, should be a positive size\n", size);
+    return -1;
+  }
+  ptr = (Node *) malloc(sizeof(Node));
+  if (ptr == NULL){
+    printf("Not enough memory\n");
+    return -1;
+  }
+  head = ptr;
+  while(i < size){
+    scanf("%d %d", ptr->value1, ptr->value2);
+    ptr->next = (Node *) malloc(sizeof(Node));
+    ptr = ptr->next;
+    if (ptr == NULL){
+      printf("Not enough memory\n");
+      return -1;
+    } 
+    i++;
+  }
+  scanf("%d %d", ptr->value1, ptr->value2);
+  ptr->next=NULL;
+  return 0;
+}
+
+void   destroyLinkedList(Node * head){
+  Node * tmp = head;
+  Node * tmp_next;
+  while(tmp != NULL){
+    tmp_next = tmp->next;
+    free(tmp);
+    tmp = tmp_next;
+  }
+}
+
+int main(){
+  Node * head = NULL;
+  buildLinkedList(head,size);
+  destroyLinkedList(head);
+  return 1;
+}
