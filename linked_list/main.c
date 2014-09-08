@@ -12,7 +12,7 @@ struct node{
 void printNode(Node * node){
   if (node == NULL)
     return;
-  printf("%d %d", node->value1, node->value2);
+  printf("%d %d\n", node->value1, node->value2);
 }
 
 void printLinkedList(Node * head){
@@ -23,7 +23,42 @@ void printLinkedList(Node * head){
     node = node->next;
   }
 }
-int buildLinkedList(Node * head, int size){
+int  removeNode(Node ** head, int value1_to_be_removed){
+  if(*head == NULL){
+    printf("Passed head node is NULL \n");
+    return -1;
+  }
+  Node * node = (*head)->next;
+  Node * previous_node=*head;
+  Node * temp_node;
+  //handle first node
+  if (previous_node->value1==value1_to_be_removed){
+    //have to remove head and assigned head->next as new head
+    printf("Removing node: ");
+    printNode(previous_node);
+    temp_node=*head;
+    free(*head);
+    *head=temp_node->next;
+    
+  }
+
+  
+  while(node != NULL){
+    if(node->value1==value1_to_be_removed){
+      printf("Removing node: ");
+      printNode(Node);
+      previous_node->next = node->next;
+      temp_node = node;
+      node = node->next;
+      free(temp_node);
+    }
+    node = node->next;
+  }
+  
+  return 0;
+}
+
+int buildLinkedList(Node ** head, int size){
 
   int i= 1 ;
   Node * ptr;
@@ -37,11 +72,11 @@ int buildLinkedList(Node * head, int size){
     return -1;
   }
   scanf("%d %d", &(ptr->value1), &(ptr->value2));
-  head = ptr;
+  *head = ptr;
   while(i < size){
-    scanf("%d %d", &(ptr->value1), &(ptr->value2));
     ptr->next = (Node *) malloc(sizeof(Node));
     ptr = ptr->next;
+    scanf("%d %d", &(ptr->value1), &(ptr->value2));
     if (ptr == NULL){
       printf("Not enough memory\n");
       return -1;
@@ -67,6 +102,7 @@ int main(){
   Node * head = NULL;
   int size;
   int input_good = 0;
+  int value1_to_be_removed;
   while(input_good == 0){
     printf("how many nodes do you want in your linked list?\n");
     scanf("%d", &size);
@@ -75,10 +111,13 @@ int main(){
     else
       printf("invalide input. Please give a positive number.\n");
   }
-  buildLinkedList(head,size);
+  buildLinkedList(&head,size);
   if (head == NULL)
     printf("head is NULL \n");
   printLinkedList(head);
+  printf("Give me a node with value1 that you want to remove:\n ");
+  scanf("%d", &value1_to_be_removed);
+  removeNode(&head, value1_to_be_removed);
   destroyLinkedList(head);
-  return 1;
+  return ;
 }
