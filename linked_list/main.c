@@ -23,39 +23,43 @@ void printLinkedList(Node * head){
     node = node->next;
   }
 }
+
+//return the number of node/s removed, -1 when error occurs
 int  removeNode(Node ** head, int value1_to_be_removed){
   if(*head == NULL){
     printf("Passed head node is NULL \n");
     return -1;
   }
-  Node * node = (*head)->next;
-  Node * previous_node=*head;
+  Node * node = *head;
+  Node * previous_node=NULL;
   Node * temp_node;
-  //handle first node
-  if (previous_node->value1==value1_to_be_removed){
-    //have to remove head and assigned head->next as new head
-    printf("Removing node: ");
-    printNode(previous_node);
-    temp_node=*head;
-    free(*head);
-    *head=temp_node->next;
-    
-  }
+  int node_removed=0;
 
-  
   while(node != NULL){
-    if(node->value1==value1_to_be_removed){
-      printf("Removing node: ");
-      printNode(Node);
-      previous_node->next = node->next;
-      temp_node = node;
-      node = node->next;
-      free(temp_node);
+    if(node->value1 == value1_to_be_removed){
+      printf("removing node:\n");
+      printNode(node);
+      //this node needs to be removed
+      if(previous_node == NULL){
+	//this is the head
+	temp_node = node;
+	node = node->next;
+	*head = node;
+	free(temp_node);
+      } else {
+	previous_node->next = node->next;
+	free(node);
+	node = previous_node->next;
+      }
+      node_removed ++;
     }
-    node = node->next;
+    else{
+      //move on to the next node
+      previous_node = node;
+      node = node->next;
+    }
   }
-  
-  return 0;
+  return node_removed;
 }
 
 int buildLinkedList(Node ** head, int size){
@@ -118,6 +122,8 @@ int main(){
   printf("Give me a node with value1 that you want to remove:\n ");
   scanf("%d", &value1_to_be_removed);
   removeNode(&head, value1_to_be_removed);
+  printf("This is the linked list after removing node\n\n");
+  printLinkedList(head);
   destroyLinkedList(head);
-  return ;
+  return 0;
 }
